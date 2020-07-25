@@ -1,7 +1,6 @@
-package com.example.cattaskapp
+package com.example.cattaskapp.apidata
 
 
-import com.example.cattaskapp.data.Cat
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.Retrofit
@@ -12,7 +11,6 @@ interface CatApi {
 
     @GET("/v1/images/search?api-key=3437333-17ce-4a96-9ed1-716360a579b8&limit=10")
     suspend fun getListOfCats(): List<Cat>
-    suspend fun updateListOfCats(): List<Cat>
 }
 
 object CatApiImpl {
@@ -29,10 +27,4 @@ object CatApiImpl {
         }
     }
 
-    suspend fun updateListOfCats(): List<Cat>
-    {
-        return withContext(Dispatchers.IO) {
-            CatService.updateListOfCats()
-        }
-    }
 }

@@ -7,28 +7,26 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import coil.api.load
-import com.example.cattaskapp.CatApiImpl
 import com.example.cattaskapp.R
-import com.example.cattaskapp.data.Cat
+import com.example.cattaskapp.apidata.Cat
+import com.example.cattaskapp.apidata.ListenerAdapter
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
-import kotlinx.android.synthetic.main.layout_item.view.*
-
-class CatAdapter : RecyclerView.Adapter<CatViewHolder>() {
+class CatAdapter(private val listener:ListenerAdapter) : RecyclerView.Adapter<CatViewHolder>() {
 
     private val items = mutableListOf<Cat>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CatViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.layout_item, null)
-        return CatViewHolder(view)
+        return CatViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.layout_item, null), listener)
     }
 
-    override fun getItemCount(): Int {
-        return items.size
-    }
+    override fun getItemCount() = items.size
 
     override fun onBindViewHolder(holder: CatViewHolder, position: Int) {
-        val fileName = items[position].iddfr ?: ""
-        val imageUrl = items[position].urldfr ?: ""
+        val fileName = items[position].idCat  ?: ""
+        val imageUrl = items[position].urlCat ?: ""
         holder.bind(fileName, imageUrl)
     }
 
@@ -38,22 +36,21 @@ class CatAdapter : RecyclerView.Adapter<CatViewHolder>() {
     }
 
     override fun onViewAttachedToWindow(holder: CatViewHolder) {
-        super.onViewAttachedToWindow(holder);
-        var layoutPosition = holder.layoutPosition;
-        if (layoutPosition == items.size - 1)
-        {
-          //newaddItems()
-        }
-    }
+        super.onViewAttachedToWindow(holder)
 
-     suspend fun newaddItems() {
-        items.addAll(CatApiImpl.updateListOfCats())
-        notifyDataSetChanged()
+        if (holder.layoutPosition == items.size - 1) {
+
+            GlobalScope.launch (Dispatchers.Main) {
+                listener.getNewItem()
+            }
+
+        }
+
     }
 
 }
 
-class  CatViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+class  CatViewHolder(view: View, private val listener: ListenerAdapter) : RecyclerView.ViewHolder(view) {
 
     private val textView = view.findViewById<TextView>(R.id.textView)
     private val imageView = view.findViewById<ImageView>(R.id.imageView)
@@ -61,7 +58,9 @@ class  CatViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     fun bind(filmName: String, imageUrl: String) {
         textView.text = filmName
         imageView.load(imageUrl)
-        imageView.tag = imageUrl
+        imageView.setOnClickListener {
+            listener.openFragmentCat(imageUrl)
+        }
     }
-}
 
+}
