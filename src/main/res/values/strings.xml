@@ -2,4 +2,8 @@
     <string name="app_name">CatTaskApp</string>
     <dimen name="maxapp">200dp</dimen>
     <dimen name="minhapp">100dp</dimen>
+    <string name="keyBundle">keyBundle</string>
+    <string name="save">Сохранение</string>
+    <string name="request">Добавь разрешение в приложение</string>
+    <string name="textReview">Включи Интернет и нажми сюда</string>
 </resources>

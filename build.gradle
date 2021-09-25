@@ -21,6 +21,22 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+
+        debug {
+
+        }
+
+    }
+
+    flavorDimensions 'country'
+    productFlavors {
+        bel {
+            dimension 'country'
+        }
+
+        eu {
+            dimension 'country'
+        }
     }
 
     kotlinOptions {
@@ -35,7 +51,7 @@ android {
     buildFeatures {
         viewBinding = true
     }
-    
+
 }
 
 dependencies {

@@ -2,4 +2,5 @@
 <resources>
     <dimen name="dimens">100dp</dimen>
     <dimen name="dimens_but">50dp</dimen>
+    <dimen name="notInternet">30dp</dimen>
 </resources>

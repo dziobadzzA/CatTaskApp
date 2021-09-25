@@ -1,6 +1,6 @@
 package com.example.cattaskapp.fragment
 
-class State(val name: String, var url:String = "") {
+class State(val name: String) {
 
     private var v = false
 

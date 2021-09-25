@@ -1,8 +1,6 @@
 package com.example.cattaskapp.fragment
 
 import android.Manifest
-import android.content.Context
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -15,7 +13,6 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import coil.api.load
 import com.example.cattaskapp.R
-import com.example.cattaskapp.apidata.ListenerFragment
 import com.example.cattaskapp.databinding.ActivityFragmentCatBinding
 import com.example.cattaskapp.databinding.ActivityFragmentCatBinding.inflate
 
@@ -26,22 +23,15 @@ class FragmentCat : Fragment() {
     private val binding get() = _binding!!
     private var imageUrl: String? = null
 
-    private lateinit var getUri: ListenerFragment
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
 
-        imageUrl = getUri.getUri()
-
         _binding = inflate(inflater, container, false)
 
-        if (!imageUrl.isNullOrEmpty())
-            binding.toolImage.load(imageUrl)
-
         binding.toolImage.setOnClickListener {
-            binding.toolImage.startAnimation(AnimationUtils.loadAnimation(context, R.anim.fade_in))
+            binding.toolImage.startAnimation(AnimationUtils.loadAnimation(context, R.anim.rotate_in))
         }
 
         binding.imageButton.setOnClickListener {
@@ -54,30 +44,24 @@ class FragmentCat : Fragment() {
 
             if (permissionStatus == PackageManager.PERMISSION_GRANTED) {
                 context?.let { it1 -> SaveImage(it1).execute(imageUrl) }
-                Toast.makeText(context, "Сохранение", Toast.LENGTH_LONG).show()
+                Toast.makeText(context, this.requireArguments().getString(context?.resources?.getString(R.string.save)), Toast.LENGTH_LONG).show()
             }
             else
-                Toast.makeText(context, "Получи разрешение", Toast.LENGTH_LONG).show()
+                Toast.makeText(context, this.requireArguments().getString(context?.resources?.getString(R.string.request)), Toast.LENGTH_LONG).show()
 
         }
+
+        imageUrl = this.requireArguments().getString(context?.resources?.getString(R.string.keyBundle))
+        if (!imageUrl.isNullOrEmpty())
+            binding.toolImage.load(imageUrl)
 
         return binding.root
     }
 
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroyView() {
+        super.onDestroyView()
         _binding = null
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-
-        if (context is ListenerFragment)
-            getUri =  context
-        else
-            Toast.makeText(context, "Repeat please, fragment not attach", Toast.LENGTH_LONG).show()
-
     }
 
 }

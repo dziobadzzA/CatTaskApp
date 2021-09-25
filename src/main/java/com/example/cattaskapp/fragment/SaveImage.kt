@@ -42,7 +42,7 @@ class SaveImage(context: Context) : AsyncTask<String, Unit, Unit>() {
 
             val any = try {
 
-                val fileCash = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "Cats$isName")
+                val fileCash = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "Cats$isName.jpg")
                 val cache = FileOutputStream(fileCash)
 
                 bitmap.compress(Bitmap.CompressFormat.JPEG , 100, cache)
