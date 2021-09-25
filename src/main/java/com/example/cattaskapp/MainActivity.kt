@@ -139,5 +139,4 @@ class MainActivity : AppCompatActivity(), ListenerAdapter  {
         binding.review.isClickable = yes
     }
 
-
 }
