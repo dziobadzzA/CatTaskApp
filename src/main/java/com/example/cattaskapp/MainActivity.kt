@@ -66,6 +66,7 @@ class MainActivity : AppCompatActivity(), ListenerAdapter  {
                 itemAdapter.addItems(it)
             }
             else {
+
                 stateNotInternet(true)
             }
 
